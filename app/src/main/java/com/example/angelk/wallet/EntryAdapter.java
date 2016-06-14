@@ -79,6 +79,7 @@ public class EntryAdapter extends BaseAdapter
 
     static class ViewHolder
     {
+        TextView amountView;
         TextView titleView;
         CheckBox statusView;
         TextView priorityView;
@@ -97,7 +98,7 @@ public class EntryAdapter extends BaseAdapter
         final ViewHolder viewHolder;
 
         // TODOx - Get the current ToDoItem
-        final Entry toDoItem = (Entry) getItem(position);
+        final Entry currentEntry = (Entry) getItem(position);
 
         if (convertView == null)
         {
@@ -105,6 +106,7 @@ public class EntryAdapter extends BaseAdapter
             convertView = inflater.inflate(R.layout.entry, null);
 
             viewHolder = new ViewHolder();
+            viewHolder.amountView = (TextView) convertView.findViewById(R.id.amountView);
             viewHolder.titleView = (TextView) convertView.findViewById(R.id.titleView);
             viewHolder.statusView = (CheckBox) convertView.findViewById(R.id.statusCheckBox);
             viewHolder.priorityView = (TextView) convertView.findViewById(R.id.priorityView);
@@ -121,10 +123,11 @@ public class EntryAdapter extends BaseAdapter
         // Remember that the data that goes in this View
         // corresponds to the user interface elements defined
         // in the layout file
-        viewHolder.titleView.setText(toDoItem.getTitle());
-        viewHolder.statusView.setChecked(toDoItem.getStatus() == Entry.Status.DONE);
-        viewHolder.priorityView.setText(toDoItem.getPriority().toString());
-        viewHolder.dateView.setText(Entry.FORMAT.format(toDoItem.getDate()));
+        viewHolder.amountView.setText(Float.toString(currentEntry.getAmount()));
+        viewHolder.titleView.setText(currentEntry.getTitle());
+        viewHolder.statusView.setChecked(currentEntry.getStatus() == Entry.Status.DONE);
+        viewHolder.priorityView.setText(currentEntry.getPriority().toString());
+        viewHolder.dateView.setText(Entry.FORMAT.format(currentEntry.getDate()));
 
 
         // TODOx - Must also set up an OnCheckedChangeListener,
@@ -138,11 +141,11 @@ public class EntryAdapter extends BaseAdapter
                 if (buttonView.isChecked())
                 {
                     viewHolder.statusView.setChecked(true);
-                    toDoItem.setStatus(Entry.Status.DONE);
+                    currentEntry.setStatus(Entry.Status.DONE);
                 } else
                 {
                     viewHolder.statusView.setChecked(false);
-                    toDoItem.setStatus(Entry.Status.NOTDONE);
+                    currentEntry.setStatus(Entry.Status.NOTDONE);
                 }
             }
         });
