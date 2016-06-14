@@ -42,6 +42,7 @@ public class AddEntryActivity extends Activity
     private Date mDate;
     private RadioGroup mPriorityRadioGroup;
     private RadioGroup mStatusRadioGroup;
+    private EditText mAmountText;
     private EditText mTitleText;
     private RadioButton mDefaultStatusButton;
     private RadioButton mDefaultPriorityButton;
@@ -51,7 +52,7 @@ public class AddEntryActivity extends Activity
     {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.add_entry);
-
+        mAmountText = (EditText) findViewById(R.id.amount);
         mTitleText = (EditText) findViewById(R.id.title);
         mDefaultStatusButton = (RadioButton) findViewById(R.id.statusNotDone);
         mDefaultPriorityButton = (RadioButton) findViewById(R.id.medPriority);
@@ -129,26 +130,20 @@ public class AddEntryActivity extends Activity
             public void onClick(View v)
             {
                 // gather ToDoItem data
-
-                // TODOx - Get the current Priority
                 Priority priority = getPriority();
-
-                // TODOx - Get the current Status
                 Status status = getStatus();
-
-                // TODOx - Get the current ToDoItem Title
+                float amount = Float.parseFloat(mAmountText.getText().toString());
                 String titleString = mTitleText.getText().toString();
-
 
                 // Construct the Date string
                 String fullDate = dateString + " " + timeString;
 
                 // Package ToDoItem data into an Intent
                 Intent data = new Intent();
-                Entry.packageIntent(data, titleString, priority, status,
+                Entry.packageIntent(data, amount, titleString, priority, status,
                         fullDate);
 
-                // TODOs - return data Intent and finish
+                //return data Intent and finish
                 setResult(RESULT_OK, data);
                 finish();
             }

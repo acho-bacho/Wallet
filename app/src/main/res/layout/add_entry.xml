@@ -4,6 +4,25 @@
                  android:layout_height="fill_parent"
                  android:orientation="vertical" >
 
+    <!-- Amount -->
+    <TextView
+        android:id="@+id/AmountLabel"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:text="@string/amount_string"
+        android:textAppearance="?android:attr/textAppearanceLarge"
+        android:layout_alignParentTop="true"
+        android:layout_alignParentStart="true"/>
+    <EditText
+        android:id="@+id/amount"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:ems="10"
+        android:inputType="numberDecimal"
+        android:layout_alignBottom="@+id/title"
+        android:layout_alignParentStart="true"
+        android:layout_toStartOf="@+id/title"/>
+
     <!-- Title -->
 
     <TextView
@@ -11,19 +30,22 @@
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
         android:text="@string/title_string"
-        android:textAppearance="?android:attr/textAppearanceLarge" >
+        android:textAppearance="?android:attr/textAppearanceLarge"
+        android:layout_alignParentTop="true"
+        android:layout_toEndOf="@+id/date_picker_button">
     </TextView>
 
     <EditText
         android:id="@+id/title"
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
-        android:layout_alignParentLeft="true"
         android:layout_below="@+id/TitleLabel"
         android:layout_marginTop="14dp"
         android:ems="10"
         android:hint="@string/enter_title_string"
-        android:inputType="textShortMessage">
+        android:inputType="textShortMessage"
+        android:layout_toEndOf="@+id/TitleLabel"
+        android:layout_alignStart="@+id/TitleLabel">
 
         <requestFocus />
     </EditText>
@@ -177,5 +199,8 @@
         android:layout_alignParentBottom="true"
         android:layout_alignParentRight="true"
         android:text="@string/submit_string" />
+
+
+
 
 </RelativeLayout>

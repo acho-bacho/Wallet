@@ -60,7 +60,6 @@ public class MainActivity extends ListActivity
         // TODOx - Inflate footerView for footer_view.xml file
         TextView footerView = (TextView) getLayoutInflater().inflate(R.layout.footer_view, null);
 
-
         // TODOx - Add footerView to ListView
         getListView().addFooterView(footerView);
 
@@ -172,6 +171,7 @@ public class MainActivity extends ListActivity
             FileInputStream fis = openFileInput(FILE_NAME);
             reader = new BufferedReader(new InputStreamReader(fis));
 
+            float amount = 0;
             String title = null;
             String priority = null;
             String status = null;
@@ -182,7 +182,7 @@ public class MainActivity extends ListActivity
                 priority = reader.readLine();
                 status = reader.readLine();
                 date = Entry.FORMAT.parse(reader.readLine());
-                mAdapter.add(new Entry(title, Priority.valueOf(priority),
+                mAdapter.add(new Entry(amount, title, Priority.valueOf(priority),
                         Status.valueOf(status), date));
             }
 
