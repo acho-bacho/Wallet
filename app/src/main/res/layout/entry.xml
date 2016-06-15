@@ -12,7 +12,7 @@
         android:layout_height="wrap_content"
         android:layout_alignParentTop="true"
         android:textAppearance="?android:attr/textAppearanceLarge"
-        android:layout_alignEnd="@+id/statusCheckBox">
+        android:layout_alignEnd="@+id/typeView">
     </TextView>
     <TextView
         android:id="@+id/titleView"
@@ -26,59 +26,42 @@
     </TextView>
 
     <TextView
-        android:id="@+id/StatusLabel"
+        android:id="@+id/TypeLabel"
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
-        android:layout_alignBaseline="@+id/statusCheckBox"
+        android:layout_alignBaseline="@+id/typeView"
         android:layout_alignParentLeft="true"
         android:layout_alignParentTop="true"
-        android:layout_marginTop="17dp"
-        android:text="@string/done_string" >
+        android:text="@string/type_string" >
     </TextView>
 
-    <CheckBox
-        android:id="@+id/statusCheckBox"
-        android:layout_width="wrap_content"
+    <TextView
+        android:id="@+id/typeView"
+        android:layout_marginTop="25dp"
+        android:layout_width="70dip"
         android:layout_height="wrap_content"
         android:layout_alignParentTop="true"
-        android:layout_marginTop="52dp"
-        android:layout_toRightOf="@+id/StatusLabel" >
-    </CheckBox>
+        android:layout_toRightOf="@+id/TypeLabel"
+        android:layout_marginLeft="@dimen/activity_vertical_margin">
+    </TextView>
 
     <TextView
         android:id="@+id/PriorityLabel"
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
-        android:layout_alignBaseline="@+id/statusCheckBox"
-        android:layout_alignTop="@+id/StatusLabel"
+        android:layout_alignBaseline="@+id/typeView"
+        android:layout_alignTop="@+id/TypeLabel"
         android:layout_toLeftOf="@+id/priorityView"
-        android:text="@string/priority_string" >
+        android:text="@string/category_str" >
     </TextView>
 
     <TextView
         android:id="@+id/priorityView"
         android:layout_width="50dip"
         android:layout_height="wrap_content"
-        android:layout_alignBaseline="@+id/statusCheckBox"
+        android:layout_alignBaseline="@+id/typeView"
         android:layout_alignParentRight="true"
-        android:layout_alignTop="@+id/StatusLabel" >
+        android:layout_alignTop="@+id/TypeLabel"
+        android:layout_marginLeft="@dimen/activity_vertical_margin">>
     </TextView>
-
-    <TextView
-        android:id="@+id/DateLabel"
-        android:layout_width="wrap_content"
-        android:layout_height="wrap_content"
-        android:layout_alignParentLeft="true"
-        android:layout_below="@+id/statusCheckBox"
-        android:text="@string/date_string" >
-    </TextView>
-
-    <TextView
-        android:id="@+id/dateView"
-        android:layout_width="wrap_content"
-        android:layout_height="wrap_content"
-        android:layout_alignBaseline="@+id/DateLabel"
-        android:layout_toRightOf="@+id/DateLabel" >
-    </TextView>
-
 </RelativeLayout>

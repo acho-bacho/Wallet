@@ -4,7 +4,6 @@ import java.util.ArrayList;
 import java.util.List;
 
 import android.content.Context;
-import android.util.Log;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
@@ -12,7 +11,6 @@ import android.widget.BaseAdapter;
 import android.widget.CheckBox;
 import android.widget.CompoundButton;
 import android.widget.CompoundButton.OnCheckedChangeListener;
-import android.widget.RelativeLayout;
 import android.widget.TextView;
 
 
@@ -22,13 +20,11 @@ public class EntryAdapter extends BaseAdapter
     private final List<Entry> mItems = new ArrayList<Entry>();
     private final Context mContext;
 
-    private static final String TAG = "Lab-UserInterface";
+    private static final String TAG = "WalletLogTag";
 
     public EntryAdapter(Context context)
     {
-
         mContext = context;
-
     }
 
     // Add a ToDoItem to the adapter
@@ -53,11 +49,8 @@ public class EntryAdapter extends BaseAdapter
     @Override
     public int getCount()
     {
-
         return mItems.size();
-
     }
-
     // Retrieve the number of ToDoItems
 
     @Override
@@ -81,9 +74,8 @@ public class EntryAdapter extends BaseAdapter
     {
         TextView amountView;
         TextView titleView;
-        CheckBox statusView;
+        TextView typeView;
         TextView priorityView;
-        TextView dateView;
     }
 
     // Create a View for the ToDoItem at specified position
@@ -108,9 +100,8 @@ public class EntryAdapter extends BaseAdapter
             viewHolder = new ViewHolder();
             viewHolder.amountView = (TextView) convertView.findViewById(R.id.amountView);
             viewHolder.titleView = (TextView) convertView.findViewById(R.id.titleView);
-            viewHolder.statusView = (CheckBox) convertView.findViewById(R.id.statusCheckBox);
+            viewHolder.typeView = (TextView) convertView.findViewById(R.id.typeView);
             viewHolder.priorityView = (TextView) convertView.findViewById(R.id.priorityView);
-            viewHolder.dateView = (TextView) convertView.findViewById(R.id.dateView);
             convertView.setTag(viewHolder);
         } else
         {
@@ -125,33 +116,45 @@ public class EntryAdapter extends BaseAdapter
         // in the layout file
         viewHolder.amountView.setText(Float.toString(currentEntry.getAmount()));
         viewHolder.titleView.setText(currentEntry.getTitle());
-        viewHolder.statusView.setChecked(currentEntry.getStatus() == Entry.Status.DONE);
+        viewHolder.typeView.setText(currentEntry.getType().toString());
         viewHolder.priorityView.setText(currentEntry.getPriority().toString());
-        viewHolder.dateView.setText(Entry.FORMAT.format(currentEntry.getDate()));
 
+        if (currentEntry.getType()== Entry.Type.EXPENSE)
+        {
+            convertView.setBackgroundResource(R.color.colorListExpense);
+        }
+        else
+        {
+            convertView.setBackgroundResource(R.color.colorListIncome);
+        }
 
         // TODOx - Must also set up an OnCheckedChangeListener,
         // which is called when the user toggles the status checkbox
         final View finalConvertView = convertView;
-        viewHolder.statusView.setOnCheckedChangeListener(new OnCheckedChangeListener()
-        {
-            @Override
-            public void onCheckedChanged(CompoundButton buttonView, boolean isChecked)
-            {
-                if (buttonView.isChecked())
-                {
-                    viewHolder.statusView.setChecked(true);
-                    currentEntry.setStatus(Entry.Status.DONE);
-                } else
-                {
-                    viewHolder.statusView.setChecked(false);
-                    currentEntry.setStatus(Entry.Status.NOTDONE);
-                }
-            }
-        });
 
         // Return the View you just created
         return convertView;
 
+    }
+
+    public float getTotalAmount()
+    {
+        float totalAmount = 0;
+
+        for (int i = 0; i < mItems.size(); i++)
+        {
+            Entry thisEntry = mItems.get(i);
+            if(thisEntry.getType()== Entry.Type.EXPENSE)
+            {
+                totalAmount -= thisEntry.getAmount();
+            }
+            else
+            {
+                totalAmount += thisEntry.getAmount();
+            }
+
+        }
+
+        return totalAmount;
     }
 }

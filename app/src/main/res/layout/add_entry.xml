@@ -50,81 +50,81 @@
         <requestFocus />
     </EditText>
 
-    <!-- Status -->
+    <!-- Type -->
 
     <TextView
-        android:id="@+id/status"
+        android:id="@+id/type"
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
         android:layout_alignParentLeft="true"
         android:layout_below="@+id/title"
         android:layout_marginTop="25dp"
-        android:text="@string/status_string"
+        android:text="@string/type_string"
         android:textAppearance="?android:attr/textAppearanceLarge" />
 
     <RadioGroup
-        android:id="@+id/statusGroup"
+        android:id="@+id/typeGroup"
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
         android:layout_alignParentLeft="true"
-        android:layout_below="@id/status"
+        android:layout_below="@id/type"
         android:orientation="horizontal"
         android:layout_marginTop="12dp" >
 
         <RadioButton
-            android:id="@+id/statusDone"
+            android:id="@+id/typeIncome"
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
-            android:text="@string/done_string" />
+            android:text="@string/income_string" />
 
         <RadioButton
-            android:id="@+id/statusNotDone"
+            android:id="@+id/typeExpense"
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
             android:checked="true"
-            android:text="@string/not_done_string" />
+            android:text="@string/expense_string" />
     </RadioGroup>
 
-    <!-- Priority -->
+    <!-- Category -->
 
     <TextView
-        android:id="@+id/priority"
+        android:id="@+id/category"
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
         android:layout_alignParentLeft="true"
-        android:layout_below="@id/statusGroup"
+        android:layout_below="@id/typeGroup"
         android:layout_marginTop="25dp"
-        android:text="@string/priority_string"
+        android:text="@string/category_str"
         android:textAppearance="?android:attr/textAppearanceLarge" />
 
     <RadioGroup
-        android:id="@+id/priorityGroup"
+        android:id="@+id/categoryGroup"
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
         android:layout_alignParentLeft="true"
-        android:layout_below="@id/priority"
+        android:layout_below="@id/category"
         android:orientation="horizontal"
         android:layout_marginTop="12dp"
-        android:text="@string/priority_string" >
+        android:text="@string/amount_string" >
 
         <RadioButton
-            android:id="@+id/lowPriority"
+            android:id="@+id/catPersonal"
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
-            android:text="@string/priority_low_string" />
+            android:text="@string/cat_personal_string" />
 
         <RadioButton
-            android:id="@+id/medPriority"
+            android:id="@+id/catOther"
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
             android:checked="true"
-            android:text="@string/priority_medium_string" />
+            android:text="@string/cat_other_string" />
 
         <RadioButton
-            android:id="@+id/highPriority"
+            android:id="@+id/catAuto"
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
-            android:text="@string/priority_high_string" />
+            android:text="@string/cat_auto_string" />
     </RadioGroup>
 
     <!-- Time and Date -->
@@ -134,7 +134,7 @@
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
         android:layout_alignParentLeft="true"
-        android:layout_below="@id/priorityGroup"
+        android:layout_below="@id/categoryGroup"
         android:layout_marginTop="25dp"
         android:text="@string/time_and_date_string"
         android:textAppearance="?android:attr/textAppearanceLarge" />

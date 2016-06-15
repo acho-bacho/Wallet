@@ -1,10 +1,6 @@
 package com.example.angelk.wallet;
 
 import android.os.Bundle;
-import android.support.design.widget.FloatingActionButton;
-import android.support.design.widget.Snackbar;
-import android.support.v7.app.AppCompatActivity;
-import android.support.v7.widget.Toolbar;
 import android.view.View;
 import android.view.Menu;
 import android.view.MenuItem;
@@ -22,28 +18,24 @@ import java.util.Date;
 
 import android.app.ListActivity;
 import android.content.Intent;
-import android.os.Bundle;
 import android.util.Log;
-import android.view.Menu;
-import android.view.MenuItem;
-import android.view.View;
 import android.view.View.OnClickListener;
 import android.widget.TextView;
-
-import com.example.angelk.wallet.Entry.Priority;
-import com.example.angelk.wallet.Entry.Status;
-
+import android.support.design.widget.FloatingActionButton;
+import com.example.angelk.wallet.Entry.Category;
+import com.example.angelk.wallet.Entry.Type;
+import android.support.design.widget.Snackbar;
 
 public class MainActivity extends ListActivity
 {
     private static final int ADD_TODO_ITEM_REQUEST = 0;
-    private static final String FILE_NAME = "TodoManagerActivityData.txt";
-    private static final String TAG = "Lab-UserInterface";
+    private static final String FILE_NAME = "WalletActivityData.txt";
+    private static final String TAG = "WalletLogTag";
 
     // IDs for menu items
     private static final int MENU_DELETE = Menu.FIRST;
     private static final int MENU_DUMP = Menu.FIRST + 1;
-
+    private static final int MENU_ADD_TEST_DATA = Menu.FIRST + 2;
     EntryAdapter mAdapter;
 
     @Override
@@ -57,43 +49,43 @@ public class MainActivity extends ListActivity
         // Put divider between ToDoItems and FooterView
         getListView().setFooterDividersEnabled(true);
 
-        // TODOx - Inflate footerView for footer_view.xml file
+        TextView headerView = (TextView) getLayoutInflater().inflate(R.layout.header_view, null);
         TextView footerView = (TextView) getLayoutInflater().inflate(R.layout.footer_view, null);
 
-        // TODOx - Add footerView to ListView
+        getListView().addHeaderView(headerView);
         getListView().addFooterView(footerView);
 
-        // TODOx - Attach Listener to FooterView
         footerView.setOnClickListener(new OnClickListener()
         {
             @Override
             public void onClick(View v)
             {
-                //TODOx - Implement OnClick().
                 Intent addToDoIntent = new Intent(MainActivity.this, AddEntryActivity.class);
                 startActivityForResult(addToDoIntent, ADD_TODO_ITEM_REQUEST);
             }
         });
 
-        // TODOx - Attach the adapter to this ListActivity's ListView
         setListAdapter(mAdapter);
 
-//        FloatingActionButton fab = (FloatingActionButton) findViewById(R.id.fab);
-//        fab.setOnClickListener(new View.OnClickListener()
-//        {
-//            @Override
-//            public void onClick(View view)
-//            {
-//                Snackbar.make(view, "Replace with your own action", Snackbar.LENGTH_LONG)
-//                        .setAction("Action", null).show();
-//            }
-//        });
+        FloatingActionButton fab = (FloatingActionButton) findViewById(R.id.fab);
+        if(fab!=null)
+        {
+            fab.setOnClickListener(new View.OnClickListener()
+            {
+                @Override
+                public void onClick(View view)
+                {
+                    Snackbar.make(view, "Replace with your own action", Snackbar.LENGTH_LONG)
+                            .setAction("Action", null).show();
+                }
+            });
+        }
+
     }
 
     @Override
     protected void onActivityResult(int requestCode, int resultCode, Intent data)
     {
-
         Log.i(TAG, "Entered onActivityResult()");
 
         // TODOx - Check result code and request code
@@ -112,17 +104,19 @@ public class MainActivity extends ListActivity
     }
 
 
-    // Do not modify below here
-
     @Override
     public void onResume()
     {
         super.onResume();
-
+        Log.d(TAG, ">>> onResume()");
         // Load saved ToDoItems, if necessary
 
         if (mAdapter.getCount() == 0)
+        {
             loadItems();
+        }
+
+        updateTotalAmount();
     }
 
     @Override
@@ -143,6 +137,7 @@ public class MainActivity extends ListActivity
 
         menu.add(Menu.NONE, MENU_DELETE, Menu.NONE, "Delete all");
         menu.add(Menu.NONE, MENU_DUMP, Menu.NONE, "Dump to log");
+        menu.add(Menu.NONE, MENU_ADD_TEST_DATA, Menu.NONE, "Add test data");
         return true;
     }
 
@@ -152,11 +147,20 @@ public class MainActivity extends ListActivity
         switch (item.getItemId())
         {
             case MENU_DELETE:
+            {
                 mAdapter.clear();
                 return true;
+            }
             case MENU_DUMP:
+            {
                 dump();
                 return true;
+            }
+            case MENU_ADD_TEST_DATA:
+            {
+                addTestData();
+                return true;
+            }
             default:
                 return super.onOptionsItemSelected(item);
         }
@@ -173,6 +177,40 @@ public class MainActivity extends ListActivity
 
     }
 
+    private void addTestData()
+    {
+        mAdapter.clear();
+
+        Entry newItem = new Entry(940, Type.INCOME, "стартова сума");
+        mAdapter.add(newItem);
+
+        newItem = new Entry(40, Type.EXPENSE, "джобни");
+        mAdapter.add(newItem);
+        newItem = new Entry(100, Type.EXPENSE, "джобни");
+        mAdapter.add(newItem);
+        newItem = new Entry(22, Type.EXPENSE, "БОБ");
+        mAdapter.add(newItem);
+        newItem = new Entry(100, Type.EXPENSE, "наем Май месец");
+        mAdapter.add(newItem);
+        newItem = new Entry(15, Type.EXPENSE, "пазар");
+        mAdapter.add(newItem);
+        newItem = new Entry(60, Type.EXPENSE, "джобни");
+        mAdapter.add(newItem);
+        newItem = new Entry(50, Type.EXPENSE, "джобни");
+        mAdapter.add(newItem);
+        newItem = new Entry(60, Type.EXPENSE, "репонт Астра");
+        mAdapter.add(newItem);
+        newItem = new Entry(40, Type.EXPENSE, "бензин");
+        mAdapter.add(newItem);
+        newItem = new Entry(40, Type.EXPENSE, "на Илко за брат ми");
+        mAdapter.add(newItem);
+        newItem = new Entry(60, Type.EXPENSE, "джобни");
+        mAdapter.add(newItem);
+        newItem = new Entry(51, Type.EXPENSE, "ток");
+        mAdapter.add(newItem);
+        updateTotalAmount();
+    }
+
     // Load stored ToDoItems
     private void loadItems()
     {
@@ -182,19 +220,19 @@ public class MainActivity extends ListActivity
             FileInputStream fis = openFileInput(FILE_NAME);
             reader = new BufferedReader(new InputStreamReader(fis));
 
-            float amount = 0;
+            String amount = null;
             String title = null;
             String priority = null;
-            String status = null;
+            String type = null;
             Date date = null;
 
-            while (null != (title = reader.readLine()))
+            while (null != (amount = reader.readLine()))
             {
+                title = reader.readLine();
                 priority = reader.readLine();
-                status = reader.readLine();
+                type = reader.readLine();
                 date = Entry.FORMAT.parse(reader.readLine());
-                mAdapter.add(new Entry(amount, title, Priority.valueOf(priority),
-                        Status.valueOf(status), date));
+                mAdapter.add(new Entry(Float.parseFloat(amount),Type.valueOf(type), title));
             }
 
         } catch (FileNotFoundException e)
@@ -221,6 +259,13 @@ public class MainActivity extends ListActivity
         }
     }
 
+    @Override
+    public void onContentChanged()
+    {
+        super.onContentChanged();
+        updateTotalAmount();
+    }
+
     // Save ToDoItems to file
     private void saveItems()
     {
@@ -233,9 +278,7 @@ public class MainActivity extends ListActivity
 
             for (int idx = 0; idx < mAdapter.getCount(); idx++)
             {
-
                 writer.println(mAdapter.getItem(idx));
-
             }
         } catch (IOException e)
         {
@@ -249,4 +292,12 @@ public class MainActivity extends ListActivity
         }
     }
 
+    public void updateTotalAmount()
+    {
+        TextView header = (TextView)findViewById(R.id.headerView);
+        if(header!=null)
+        {
+            header.setText(String.format("%.2f", mAdapter.getTotalAmount()));
+        }
+    }
 }

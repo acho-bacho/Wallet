@@ -12,19 +12,20 @@ public class Entry
 {
     public static final String ITEM_SEP = System.getProperty("line.separator");
 
-    public enum Priority
+    public enum Type
     {
-        LOW, MED, HIGH
+        INCOME, EXPENSE
     };
 
-    public enum Status
+    public enum Category
     {
-        NOTDONE, DONE
+        OTHER, PERSONAL, AUTO, UTILITIES
     };
+
     public final static String AMOUNT = "amount";
     public final static String TITLE = "title";
-    public final static String PRIORITY = "priority";
-    public final static String STATUS = "status";
+    public final static String TYPE = "type";
+    public final static String CATEGORY = "priority";
     public final static String DATE = "date";
     public final static String FILENAME = "filename";
 
@@ -32,17 +33,17 @@ public class Entry
 
     private float mAmount = 0;
     private String mTitle = new String();
-    private Priority mPriority = Priority.LOW;
-    private Status mStatus = Status.NOTDONE;
+    private Category mCategory = Category.OTHER;
+    private Type mType = Type.EXPENSE;
     private Date mDate = new Date();
 
-    Entry(float amount, String title, Priority priority, Status status, Date date)
+    Entry(float amount, Type type, String title)
     {
         this.mAmount = amount;
+        this.mType = type;
         this.mTitle = title;
-        this.mPriority = priority;
-        this.mStatus = status;
-        this.mDate = date;
+        this.mCategory = Category.OTHER;
+        this.mDate = new Date();
     }
 
     // Create a new Entry from data packaged in an Intent
@@ -50,8 +51,8 @@ public class Entry
     {
         mAmount = intent.getFloatExtra(Entry.AMOUNT, 0);
         mTitle = intent.getStringExtra(Entry.TITLE);
-        mPriority = Priority.valueOf(intent.getStringExtra(Entry.PRIORITY));
-        mStatus = Status.valueOf(intent.getStringExtra(Entry.STATUS));
+        mCategory = Category.valueOf(intent.getStringExtra(Entry.CATEGORY));
+        mType = Type.valueOf(intent.getStringExtra(Entry.TYPE));
 
         try
         {
@@ -78,22 +79,22 @@ public class Entry
         mTitle = title;
     }
 
-    public Priority getPriority()
+    public Category getPriority()
     {
-        return mPriority;
+        return mCategory;
     }
-    public void setPriority(Priority priority)
+    public void setPriority(Category category)
     {
-        mPriority = priority;
+        mCategory = category;
     }
 
-    public Status getStatus()
+    public Type getType()
     {
-        return mStatus;
+        return mType;
     }
-    public void setStatus(Status status)
+    public void setType(Type type)
     {
-        mStatus = status;
+        mType = type;
     }
 
     public Date getDate()
@@ -109,27 +110,27 @@ public class Entry
     // package them for transport in an Intent
 
     public static void packageIntent(Intent intent, float amount, String title,
-                                     Priority priority, Status status, String date)
+                                     Category category, Type type, String date)
     {
         intent.putExtra(Entry.AMOUNT, amount);
         intent.putExtra(Entry.TITLE, title);
-        intent.putExtra(Entry.PRIORITY, priority.toString());
-        intent.putExtra(Entry.STATUS, status.toString());
+        intent.putExtra(Entry.CATEGORY, category.toString());
+        intent.putExtra(Entry.TYPE, type.toString());
         intent.putExtra(Entry.DATE, date);
 
     }
 
     public String toString()
     {
-        return mAmount + ITEM_SEP + mTitle + ITEM_SEP + mPriority + ITEM_SEP + mStatus + ITEM_SEP + FORMAT.format(mDate);
+        return mAmount + ITEM_SEP + mTitle + ITEM_SEP + mCategory + ITEM_SEP + mType + ITEM_SEP + FORMAT.format(mDate);
     }
 
     public String toLog()
     {
         return "Amount:" + mAmount + ITEM_SEP +
                 "Title:" + mTitle + ITEM_SEP +
-                "Priority:" + mPriority + ITEM_SEP +
-                "Status:" + mStatus + ITEM_SEP +
+                "Category:" + mCategory + ITEM_SEP +
+                "Type:" + mType + ITEM_SEP +
                 "Date:" + FORMAT.format(mDate) + "\n";
     }
 }

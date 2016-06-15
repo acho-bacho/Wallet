@@ -5,14 +5,12 @@ import android.app.Activity;
 import java.util.Calendar;
 import java.util.Date;
 
-import android.app.Activity;
 import android.app.DatePickerDialog;
 import android.app.Dialog;
 import android.app.DialogFragment;
 import android.app.TimePickerDialog;
 import android.content.Intent;
 import android.os.Bundle;
-import android.util.Log;
 import android.view.View;
 import android.view.View.OnClickListener;
 import android.widget.Button;
@@ -23,16 +21,13 @@ import android.widget.RadioGroup;
 import android.widget.TextView;
 import android.widget.TimePicker;
 
-import com.example.angelk.wallet.Entry.Priority;
-import com.example.angelk.wallet.Entry.Status;
-
 public class AddEntryActivity extends Activity
 {
 
     // 7 days in milliseconds - 7 * 24 * 60 * 60 * 1000
     private static final int SEVEN_DAYS = 604800000;
 
-    private static final String TAG = "Lab-UserInterface";
+    private static final String TAG = "WalletLogTag";
 
     private static String timeString;
     private static String dateString;
@@ -40,12 +35,12 @@ public class AddEntryActivity extends Activity
     private static TextView timeView;
 
     private Date mDate;
-    private RadioGroup mPriorityRadioGroup;
-    private RadioGroup mStatusRadioGroup;
+    private RadioGroup mCategoryRadio;
+    private RadioGroup mTypeRadioGroup;
     private EditText mAmountText;
     private EditText mTitleText;
-    private RadioButton mDefaultStatusButton;
-    private RadioButton mDefaultPriorityButton;
+    private RadioButton mDefaultTypeBtn;
+    private RadioButton mDefaultCategoryBtn;
 
     @Override
     protected void onCreate(Bundle savedInstanceState)
@@ -54,10 +49,10 @@ public class AddEntryActivity extends Activity
         setContentView(R.layout.add_entry);
         mAmountText = (EditText) findViewById(R.id.amount);
         mTitleText = (EditText) findViewById(R.id.title);
-        mDefaultStatusButton = (RadioButton) findViewById(R.id.statusNotDone);
-        mDefaultPriorityButton = (RadioButton) findViewById(R.id.medPriority);
-        mPriorityRadioGroup = (RadioGroup) findViewById(R.id.priorityGroup);
-        mStatusRadioGroup = (RadioGroup) findViewById(R.id.statusGroup);
+        mDefaultTypeBtn = (RadioButton) findViewById(R.id.typeExpense);
+        mDefaultCategoryBtn = (RadioButton) findViewById(R.id.catOther);
+        mCategoryRadio = (RadioGroup) findViewById(R.id.categoryGroup);
+        mTypeRadioGroup = (RadioGroup) findViewById(R.id.typeGroup);
         dateView = (TextView) findViewById(R.id.date);
         timeView = (TextView) findViewById(R.id.time);
 
@@ -130,8 +125,8 @@ public class AddEntryActivity extends Activity
             public void onClick(View v)
             {
                 // gather ToDoItem data
-                Priority priority = getPriority();
-                Status status = getStatus();
+                Entry.Category category = getPriority();
+                Entry.Type type = getType();
                 float amount = Float.parseFloat(mAmountText.getText().toString());
                 String titleString = mTitleText.getText().toString();
 
@@ -140,7 +135,7 @@ public class AddEntryActivity extends Activity
 
                 // Package ToDoItem data into an Intent
                 Intent data = new Intent();
-                Entry.packageIntent(data, amount, titleString, priority, status,
+                Entry.packageIntent(data, amount, titleString, category, type,
                         fullDate);
 
                 //return data Intent and finish
@@ -152,8 +147,8 @@ public class AddEntryActivity extends Activity
     private void resetDefaultValues()
     {
         mTitleText.setText("");
-        mDefaultStatusButton.setChecked(true);
-        mDefaultPriorityButton.setChecked(true);
+        mDefaultTypeBtn.setChecked(true);
+        mDefaultCategoryBtn.setChecked(true);
     }
     // Do not modify below this point.
 
@@ -207,38 +202,38 @@ public class AddEntryActivity extends Activity
         timeString = hour + ":" + min + ":00";
     }
 
-    private Priority getPriority()
+    private Entry.Category getPriority()
     {
 
-        switch (mPriorityRadioGroup.getCheckedRadioButtonId())
+        switch (mCategoryRadio.getCheckedRadioButtonId())
         {
-            case R.id.lowPriority:
+            case R.id.catOther:
             {
-                return Priority.LOW;
+                return Entry.Category.PERSONAL;
             }
-            case R.id.highPriority:
+            case R.id.catAuto:
             {
-                return Priority.HIGH;
+                return Entry.Category.AUTO;
             }
             default:
             {
-                return Priority.MED;
+                return Entry.Category.OTHER;
             }
         }
     }
 
-    private Status getStatus()
+    private Entry.Type getType()
     {
 
-        switch (mStatusRadioGroup.getCheckedRadioButtonId())
+        switch (mTypeRadioGroup.getCheckedRadioButtonId())
         {
-            case R.id.statusDone:
+            case R.id.typeIncome:
             {
-                return Status.DONE;
+                return Entry.Type.INCOME;
             }
             default:
             {
-                return Status.NOTDONE;
+                return Entry.Type.EXPENSE;
             }
         }
     }
