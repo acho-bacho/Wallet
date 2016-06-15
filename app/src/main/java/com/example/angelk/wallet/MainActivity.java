@@ -1,6 +1,7 @@
 package com.example.angelk.wallet;
 
 import android.os.Bundle;
+import android.view.ContextMenu;
 import android.view.View;
 import android.view.Menu;
 import android.view.MenuItem;
@@ -20,6 +21,7 @@ import android.app.ListActivity;
 import android.content.Intent;
 import android.util.Log;
 import android.view.View.OnClickListener;
+import android.widget.AdapterView;
 import android.widget.TextView;
 import android.support.design.widget.FloatingActionButton;
 import com.example.angelk.wallet.Entry.Category;
@@ -81,6 +83,19 @@ public class MainActivity extends ListActivity
             });
         }
 
+        this.getListView().setLongClickable(true);
+//        this.getListView().setOnItemLongClickListener(new AdapterView.OnItemLongClickListener()
+//        {
+//            public boolean onItemLongClick(AdapterView<?> parent, View v, int position, long id)
+//            {
+//                Log.v("long clicked","pos: " + position);
+//                return true;
+//            }
+//        });
+//
+//
+        registerForContextMenu(getListView());
+
     }
 
     @Override
@@ -119,6 +134,8 @@ public class MainActivity extends ListActivity
         updateTotalAmount();
     }
 
+
+
     @Override
     protected void onPause()
     {
@@ -128,6 +145,21 @@ public class MainActivity extends ListActivity
 
         saveItems();
 
+    }
+
+    @Override
+    public void onCreateContextMenu(ContextMenu menu, View v, ContextMenu.ContextMenuInfo menuInfo)
+    {
+        super.onCreateContextMenu(menu, v, menuInfo);
+
+        AdapterView.AdapterContextMenuInfo info;
+        try {
+            info = (AdapterView.AdapterContextMenuInfo) menuInfo;
+        } catch (ClassCastException e) {
+            Log.e(TAG, "bad menuInfo", e);
+            return;
+        }
+        long id = getListAdapter().getItemId(info.position);
     }
 
     @Override
