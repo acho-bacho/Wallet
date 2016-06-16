@@ -35,7 +35,11 @@ public class EntryAdapter extends BaseAdapter
         mItems.add(item);
         notifyDataSetChanged();
     }
-
+    public void delete(int location)
+    {
+        mItems.remove(location);
+        notifyDataSetChanged();
+    }
     // Clears the list adapter of all items.
 
     public void clear()

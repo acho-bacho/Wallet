@@ -22,4 +22,6 @@
     <string name="date_string">date</string>
     <string name="category_str">Category</string>
     <string name="amount_string">Amount</string>
+    <string name="context_menu_edit">Edit</string>
+    <string name="context_menu_delete">Delete</string>
 </resources>

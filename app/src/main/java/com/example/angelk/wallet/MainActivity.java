@@ -38,6 +38,10 @@ public class MainActivity extends ListActivity
     private static final int MENU_DELETE = Menu.FIRST;
     private static final int MENU_DUMP = Menu.FIRST + 1;
     private static final int MENU_ADD_TEST_DATA = Menu.FIRST + 2;
+
+    private static final int CTXT_MENU_CMD_EDIT = 0;
+    private static final int CTXT_MENU_CMD_DELETE = 1;
+
     EntryAdapter mAdapter;
 
     @Override
@@ -67,6 +71,15 @@ public class MainActivity extends ListActivity
             }
         });
 
+        headerView.setOnClickListener(new OnClickListener()
+        {
+            @Override
+            public void onClick(View v)
+            {
+                updateTotalAmount();
+            }
+        });
+
         setListAdapter(mAdapter);
 
         FloatingActionButton fab = (FloatingActionButton) findViewById(R.id.fab);
@@ -83,7 +96,7 @@ public class MainActivity extends ListActivity
             });
         }
 
-        this.getListView().setLongClickable(true);
+        getListView().setLongClickable(true);
 //        this.getListView().setOnItemLongClickListener(new AdapterView.OnItemLongClickListener()
 //        {
 //            public boolean onItemLongClick(AdapterView<?> parent, View v, int position, long id)
@@ -152,14 +165,31 @@ public class MainActivity extends ListActivity
     {
         super.onCreateContextMenu(menu, v, menuInfo);
 
-        AdapterView.AdapterContextMenuInfo info;
-        try {
-            info = (AdapterView.AdapterContextMenuInfo) menuInfo;
-        } catch (ClassCastException e) {
-            Log.e(TAG, "bad menuInfo", e);
-            return;
-        }
+        AdapterView.AdapterContextMenuInfo info = (AdapterView.AdapterContextMenuInfo) menuInfo;
         long id = getListAdapter().getItemId(info.position);
+
+        Log.d(TAG,">>>item id is " + id);
+        menu.add(0, CTXT_MENU_CMD_EDIT, 0, R.string.context_menu_edit);
+        menu.add(0, CTXT_MENU_CMD_DELETE, 0, R.string.context_menu_delete);
+    }
+
+    @Override
+    public boolean onContextItemSelected(MenuItem item)
+    {
+        AdapterView.AdapterContextMenuInfo info = (AdapterView.AdapterContextMenuInfo) item.getMenuInfo();
+
+        switch (item.getItemId())
+        {
+            case CTXT_MENU_CMD_EDIT:
+                Log.d(TAG,">>> editing " + info.id);
+                return true;
+            case CTXT_MENU_CMD_DELETE:
+                deleteEntry(info.id);
+                Log.d(TAG,">>> deleting " + info.id);
+                return true;
+            default:
+                return super.onContextItemSelected(item);
+        }
     }
 
     @Override
@@ -331,5 +361,11 @@ public class MainActivity extends ListActivity
         {
             header.setText(String.format("%.2f", mAdapter.getTotalAmount()));
         }
+    }
+
+    public void deleteEntry(long id)
+    {
+        mAdapter.delete((int)id);
+        updateTotalAmount();
     }
 }
