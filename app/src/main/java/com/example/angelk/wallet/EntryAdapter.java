@@ -76,6 +76,7 @@ public class EntryAdapter extends BaseAdapter
 
     static class ViewHolder
     {
+        TextView colorView;
         TextView amountView;
         TextView titleView;
         TextView typeView;
@@ -102,6 +103,7 @@ public class EntryAdapter extends BaseAdapter
             convertView = inflater.inflate(R.layout.entry, null);
 
             viewHolder = new ViewHolder();
+            viewHolder.colorView = (TextView) convertView.findViewById(R.id.colorView);
             viewHolder.amountView = (TextView) convertView.findViewById(R.id.amountView);
             viewHolder.titleView = (TextView) convertView.findViewById(R.id.titleView);
             viewHolder.typeView = (TextView) convertView.findViewById(R.id.typeView);
@@ -125,11 +127,13 @@ public class EntryAdapter extends BaseAdapter
 
         if (currentEntry.getType()== Entry.Type.EXPENSE)
         {
-            convertView.setBackgroundResource(R.color.colorListExpense);
+            viewHolder.colorView.setBackgroundResource(R.color.colorListExpense);
+            //convertView.setBackgroundResource(R.color.colorListExpense);
         }
         else
         {
-            convertView.setBackgroundResource(R.color.colorListIncome);
+            viewHolder.colorView.setBackgroundResource(R.color.colorListIncome);
+            //convertView.setBackgroundResource(R.color.colorListIncome);
         }
 
         // TODOx - Must also set up an OnCheckedChangeListener,

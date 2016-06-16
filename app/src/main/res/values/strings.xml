@@ -24,4 +24,8 @@
     <string name="amount_string">Amount</string>
     <string name="context_menu_edit">Edit</string>
     <string name="context_menu_delete">Delete</string>
+    <string name="options_menu_delete_all">Delete All</string>
+    <string name="options_menu_export_to_file">Export to file</string>
+    <string name="options_menu_import_from_file">Import From File</string>
+    <string name="options_menu_add_test_data">Add Test Data</string>
 </resources>

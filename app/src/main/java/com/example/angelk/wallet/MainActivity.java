@@ -5,6 +5,7 @@ import android.view.ContextMenu;
 import android.view.View;
 import android.view.Menu;
 import android.view.MenuItem;
+
 import java.io.BufferedReader;
 import java.io.BufferedWriter;
 import java.io.FileInputStream;
@@ -24,20 +25,24 @@ import android.view.View.OnClickListener;
 import android.widget.AdapterView;
 import android.widget.TextView;
 import android.support.design.widget.FloatingActionButton;
+
 import com.example.angelk.wallet.Entry.Category;
 import com.example.angelk.wallet.Entry.Type;
+
 import android.support.design.widget.Snackbar;
 
 public class MainActivity extends ListActivity
 {
     private static final int ADD_TODO_ITEM_REQUEST = 0;
     private static final String FILE_NAME = "WalletActivityData.txt";
+    private static final String EXPORT_FILE_NAME = "export_WalletActivityData.txt";
     private static final String TAG = "WalletLogTag";
 
     // IDs for menu items
     private static final int MENU_DELETE = Menu.FIRST;
-    private static final int MENU_DUMP = Menu.FIRST + 1;
-    private static final int MENU_ADD_TEST_DATA = Menu.FIRST + 2;
+    private static final int MENU_EXPORT = Menu.FIRST + 1;
+    private static final int MENU_IMPORT = Menu.FIRST + 2;
+    private static final int MENU_ADD_TEST_DATA = Menu.FIRST + 3;
 
     private static final int CTXT_MENU_CMD_EDIT = 0;
     private static final int CTXT_MENU_CMD_DELETE = 1;
@@ -83,7 +88,7 @@ public class MainActivity extends ListActivity
         setListAdapter(mAdapter);
 
         FloatingActionButton fab = (FloatingActionButton) findViewById(R.id.fab);
-        if(fab!=null)
+        if (fab != null)
         {
             fab.setOnClickListener(new View.OnClickListener()
             {
@@ -136,9 +141,8 @@ public class MainActivity extends ListActivity
     public void onResume()
     {
         super.onResume();
-        Log.d(TAG, ">>> onResume()");
-        // Load saved ToDoItems, if necessary
 
+        // Load saved Entries
         if (mAdapter.getCount() == 0)
         {
             loadItems();
@@ -148,16 +152,13 @@ public class MainActivity extends ListActivity
     }
 
 
-
     @Override
     protected void onPause()
     {
         super.onPause();
 
         // Save ToDoItems
-
         saveItems();
-
     }
 
     @Override
@@ -168,7 +169,7 @@ public class MainActivity extends ListActivity
         AdapterView.AdapterContextMenuInfo info = (AdapterView.AdapterContextMenuInfo) menuInfo;
         long id = getListAdapter().getItemId(info.position);
 
-        Log.d(TAG,">>>item id is " + id);
+        Log.d(TAG, ">>>item id is " + id);
         menu.add(0, CTXT_MENU_CMD_EDIT, 0, R.string.context_menu_edit);
         menu.add(0, CTXT_MENU_CMD_DELETE, 0, R.string.context_menu_delete);
     }
@@ -181,11 +182,11 @@ public class MainActivity extends ListActivity
         switch (item.getItemId())
         {
             case CTXT_MENU_CMD_EDIT:
-                Log.d(TAG,">>> editing " + info.id);
+                Log.d(TAG, ">>> editing " + info.id);
                 return true;
             case CTXT_MENU_CMD_DELETE:
                 deleteEntry(info.id);
-                Log.d(TAG,">>> deleting " + info.id);
+                Log.d(TAG, ">>> deleting " + info.id);
                 return true;
             default:
                 return super.onContextItemSelected(item);
@@ -197,9 +198,10 @@ public class MainActivity extends ListActivity
     {
         super.onCreateOptionsMenu(menu);
 
-        menu.add(Menu.NONE, MENU_DELETE, Menu.NONE, "Delete all");
-        menu.add(Menu.NONE, MENU_DUMP, Menu.NONE, "Dump to log");
-        menu.add(Menu.NONE, MENU_ADD_TEST_DATA, Menu.NONE, "Add test data");
+        menu.add(Menu.NONE, MENU_DELETE, Menu.NONE, R.string.options_menu_delete_all);
+        menu.add(Menu.NONE, MENU_EXPORT, Menu.NONE, R.string.options_menu_export_to_file);
+        menu.add(Menu.NONE, MENU_IMPORT, Menu.NONE, R.string.options_menu_import_from_file);
+        menu.add(Menu.NONE, MENU_ADD_TEST_DATA, Menu.NONE, R.string.options_menu_add_test_data);
         return true;
     }
 
@@ -213,9 +215,14 @@ public class MainActivity extends ListActivity
                 mAdapter.clear();
                 return true;
             }
-            case MENU_DUMP:
+            case MENU_EXPORT:
             {
-                dump();
+                saveItems(EXPORT_FILE_NAME);
+                return true;
+            }
+            case MENU_IMPORT:
+            {
+                loadItems(EXPORT_FILE_NAME);
                 return true;
             }
             case MENU_ADD_TEST_DATA:
@@ -273,47 +280,54 @@ public class MainActivity extends ListActivity
         updateTotalAmount();
     }
 
-    // Load stored ToDoItems
-    private void loadItems()
+    // Load stored Entries
+    private void loadItems(String... filename)
     {
+        String filenameToUse = filename.length > 0 ? filename[0] : FILE_NAME;
+
         BufferedReader reader = null;
         try
         {
-            FileInputStream fis = openFileInput(FILE_NAME);
+            FileInputStream fis = openFileInput(filenameToUse);
             reader = new BufferedReader(new InputStreamReader(fis));
 
             String amount = null;
-            String title = null;
-            String priority = null;
             String type = null;
+            String title = null;
+            String category = null;
             Date date = null;
 
             while (null != (amount = reader.readLine()))
             {
                 title = reader.readLine();
-                priority = reader.readLine();
+                category = reader.readLine();
                 type = reader.readLine();
                 date = Entry.FORMAT.parse(reader.readLine());
-                mAdapter.add(new Entry(Float.parseFloat(amount),Type.valueOf(type), title));
+                mAdapter.add(new Entry(Float.parseFloat(amount), Type.valueOf(type), title));
             }
 
-        } catch (FileNotFoundException e)
+        }
+        catch (FileNotFoundException e)
         {
             e.printStackTrace();
-        } catch (IOException e)
+        }
+        catch (IOException e)
         {
             e.printStackTrace();
-        } catch (ParseException e)
+        }
+        catch (ParseException e)
         {
             e.printStackTrace();
-        } finally
+        }
+        finally
         {
             if (null != reader)
             {
                 try
                 {
                     reader.close();
-                } catch (IOException e)
+                }
+                catch (IOException e)
                 {
                     e.printStackTrace();
                 }
@@ -329,12 +343,14 @@ public class MainActivity extends ListActivity
     }
 
     // Save ToDoItems to file
-    private void saveItems()
+    private void saveItems(String... filename)
     {
+        String filenameToUse = filename.length > 0 ? filename[0] : FILE_NAME;
+
         PrintWriter writer = null;
         try
         {
-            FileOutputStream fos = openFileOutput(FILE_NAME, MODE_PRIVATE);
+            FileOutputStream fos = openFileOutput(filenameToUse, MODE_PRIVATE);
             writer = new PrintWriter(new BufferedWriter(new OutputStreamWriter(
                     fos)));
 
@@ -342,10 +358,12 @@ public class MainActivity extends ListActivity
             {
                 writer.println(mAdapter.getItem(idx));
             }
-        } catch (IOException e)
+        }
+        catch (IOException e)
         {
             e.printStackTrace();
-        } finally
+        }
+        finally
         {
             if (null != writer)
             {
@@ -356,8 +374,8 @@ public class MainActivity extends ListActivity
 
     public void updateTotalAmount()
     {
-        TextView header = (TextView)findViewById(R.id.headerView);
-        if(header!=null)
+        TextView header = (TextView) findViewById(R.id.headerView);
+        if (header != null)
         {
             header.setText(String.format("%.2f", mAdapter.getTotalAmount()));
         }
@@ -365,7 +383,7 @@ public class MainActivity extends ListActivity
 
     public void deleteEntry(long id)
     {
-        mAdapter.delete((int)id);
+        mAdapter.delete((int) id);
         updateTotalAmount();
     }
 }
