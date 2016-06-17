@@ -127,12 +127,12 @@ public class EntryAdapter extends BaseAdapter
 
         if (currentEntry.getType()== Entry.Type.EXPENSE)
         {
-            viewHolder.colorView.setBackgroundResource(R.color.colorListExpense);
+            viewHolder.colorView.setBackgroundResource(R.color.colorAccent);
             //convertView.setBackgroundResource(R.color.colorListExpense);
         }
         else
         {
-            viewHolder.colorView.setBackgroundResource(R.color.colorListIncome);
+            viewHolder.colorView.setBackgroundResource(R.color.colorPrimary);
             //convertView.setBackgroundResource(R.color.colorListIncome);
         }
 

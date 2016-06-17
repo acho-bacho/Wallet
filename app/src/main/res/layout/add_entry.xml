@@ -1,54 +1,37 @@
 <?xml version="1.0" encoding="utf-8"?>
-<RelativeLayout  xmlns:android="http://schemas.android.com/apk/res/android"
-                 android:layout_width="fill_parent"
-                 android:layout_height="fill_parent"
-                 android:orientation="vertical" >
+<RelativeLayout xmlns:android="http://schemas.android.com/apk/res/android"
+                android:layout_width="fill_parent"
+                android:layout_height="fill_parent"
+                android:orientation="vertical">
 
     <!-- Amount -->
-    <TextView
-        android:id="@+id/AmountLabel"
-        android:layout_width="wrap_content"
-        android:layout_height="wrap_content"
-        android:text="@string/amount_string"
-        android:textAppearance="?android:attr/textAppearanceLarge"
-        android:layout_alignParentTop="true"
-        android:layout_alignParentStart="true"/>
     <EditText
         android:id="@+id/amount"
-        android:layout_width="match_parent"
-        android:layout_height="wrap_content"
-        android:ems="10"
-        android:inputType="numberDecimal"
-        android:layout_alignBottom="@+id/title"
-        android:layout_alignParentStart="true"
-        android:layout_toStartOf="@+id/title"/>
-
-    <!-- Title -->
-
-    <TextView
-        android:id="@+id/TitleLabel"
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
-        android:text="@string/title_string"
-        android:textAppearance="?android:attr/textAppearanceLarge"
+        android:layout_alignBottom="@+id/title"
         android:layout_alignParentTop="true"
-        android:layout_toEndOf="@+id/date_picker_button">
-    </TextView>
+        android:ems="10"
+        android:hint="@string/amount_string"
+        android:inputType="numberDecimal"
+        >
 
+        <requestFocus/>
+    </EditText>
+
+    <!-- Title -->
     <EditText
         android:id="@+id/title"
-        android:layout_width="match_parent"
-        android:layout_height="wrap_content"
-        android:layout_below="@+id/TitleLabel"
-        android:layout_marginTop="14dp"
+        android:layout_width="wrap_content"
+        android:layout_height="60sp"
+        android:layout_alignParentTop="true"
+        android:layout_toEndOf="@+id/amount"
         android:ems="10"
-        android:hint="@string/enter_title_string"
+        android:hint="@string/enter_description_string"
         android:inputType="textShortMessage"
-        android:layout_toEndOf="@+id/TitleLabel"
-        android:layout_alignStart="@+id/TitleLabel">
 
-        <requestFocus />
-    </EditText>
+        />
+
 
     <!-- Type -->
 
@@ -60,7 +43,7 @@
         android:layout_below="@+id/title"
         android:layout_marginTop="25dp"
         android:text="@string/type_string"
-        android:textAppearance="?android:attr/textAppearanceLarge" />
+        android:textAppearance="?android:attr/textAppearanceLarge"/>
 
     <RadioGroup
         android:id="@+id/typeGroup"
@@ -68,21 +51,21 @@
         android:layout_height="wrap_content"
         android:layout_alignParentLeft="true"
         android:layout_below="@id/type"
-        android:orientation="horizontal"
-        android:layout_marginTop="12dp" >
+        android:layout_marginTop="12dp"
+        android:orientation="horizontal">
 
         <RadioButton
             android:id="@+id/typeIncome"
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
-            android:text="@string/income_string" />
+            android:text="@string/income_string"/>
 
         <RadioButton
             android:id="@+id/typeExpense"
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
             android:checked="true"
-            android:text="@string/expense_string" />
+            android:text="@string/expense_string"/>
     </RadioGroup>
 
     <!-- Category -->
@@ -95,7 +78,7 @@
         android:layout_below="@id/typeGroup"
         android:layout_marginTop="25dp"
         android:text="@string/category_str"
-        android:textAppearance="?android:attr/textAppearanceLarge" />
+        android:textAppearance="?android:attr/textAppearanceLarge"/>
 
     <RadioGroup
         android:id="@+id/categoryGroup"
@@ -103,75 +86,29 @@
         android:layout_height="wrap_content"
         android:layout_alignParentLeft="true"
         android:layout_below="@id/category"
-        android:orientation="horizontal"
         android:layout_marginTop="12dp"
-        android:text="@string/amount_string" >
+        android:orientation="horizontal"
+        android:text="@string/amount_string">
 
         <RadioButton
             android:id="@+id/catPersonal"
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
-            android:text="@string/cat_personal_string" />
+            android:text="@string/cat_personal_string"/>
 
         <RadioButton
             android:id="@+id/catOther"
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
             android:checked="true"
-            android:text="@string/cat_other_string" />
+            android:text="@string/cat_other_string"/>
 
         <RadioButton
             android:id="@+id/catAuto"
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
-            android:text="@string/cat_auto_string" />
+            android:text="@string/cat_auto_string"/>
     </RadioGroup>
-
-    <!-- Time and Date -->
-
-    <TextView
-        android:id="@+id/time_and_date"
-        android:layout_width="wrap_content"
-        android:layout_height="wrap_content"
-        android:layout_alignParentLeft="true"
-        android:layout_below="@id/categoryGroup"
-        android:layout_marginTop="25dp"
-        android:text="@string/time_and_date_string"
-        android:textAppearance="?android:attr/textAppearanceLarge" />
-
-    <TextView
-        android:id="@+id/date"
-        android:layout_width="wrap_content"
-        android:layout_height="wrap_content"
-        android:layout_alignParentLeft="true"
-        android:layout_below="@+id/time_and_date"
-        android:layout_marginTop="12dp"
-        android:text="@string/no_date_set_string" />
-
-    <TextView
-        android:id="@+id/time"
-        android:layout_width="wrap_content"
-        android:layout_height="wrap_content"
-        android:layout_alignParentRight="true"
-        android:layout_below="@+id/time_and_date"
-        android:text="@string/no_time_set_string" />
-
-    <Button
-        android:id="@+id/date_picker_button"
-        android:layout_width="wrap_content"
-        android:layout_height="wrap_content"
-        android:layout_alignParentLeft="true"
-        android:layout_below="@id/date"
-        android:text="@string/choose_date_string" />
-
-    <Button
-        android:id="@+id/time_picker_button"
-        android:layout_width="wrap_content"
-        android:layout_height="wrap_content"
-        android:layout_alignParentRight="true"
-        android:layout_alignTop="@id/date_picker_button"
-        android:layout_below="@id/time"
-        android:text="@string/choose_time_string" />
 
     <!-- Buttons -->
 
@@ -182,7 +119,8 @@
         android:layout_alignParentBottom="true"
         android:layout_alignParentLeft="true"
         android:layout_marginTop="25dp"
-        android:text="@string/cancel_string" />
+        android:text="@string/cancel_string"
+        />
 
     <Button
         android:id="@+id/resetButton"
@@ -190,7 +128,7 @@
         android:layout_height="wrap_content"
         android:layout_alignParentBottom="true"
         android:layout_centerHorizontal="true"
-        android:text="@string/reset_string" />
+        android:text="@string/reset_string"/>
 
     <Button
         android:id="@+id/submitButton"
@@ -198,9 +136,7 @@
         android:layout_height="wrap_content"
         android:layout_alignParentBottom="true"
         android:layout_alignParentRight="true"
-        android:text="@string/submit_string" />
-
-
+        android:text="@string/submit_string"/>
 
 
 </RelativeLayout>

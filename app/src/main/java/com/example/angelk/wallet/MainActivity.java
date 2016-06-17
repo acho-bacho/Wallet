@@ -20,29 +20,20 @@ import java.util.Date;
 
 import android.app.ListActivity;
 import android.content.Intent;
-import android.util.Log;
 import android.view.View.OnClickListener;
 import android.widget.AdapterView;
 import android.widget.TextView;
-import android.support.design.widget.FloatingActionButton;
 
-import com.example.angelk.wallet.Entry.Category;
 import com.example.angelk.wallet.Entry.Type;
-
-import android.support.design.widget.Snackbar;
 
 public class MainActivity extends ListActivity
 {
-    private static final int ADD_TODO_ITEM_REQUEST = 0;
+    private static final int ADD_ENTRY_REQUEST = 0;
+    private static final int EDIT_ENTRY_REQUEST = 1;
+
     private static final String FILE_NAME = "WalletActivityData.txt";
     private static final String EXPORT_FILE_NAME = "export_WalletActivityData.txt";
     private static final String TAG = "WalletLogTag";
-
-    // IDs for menu items
-    private static final int MENU_DELETE = Menu.FIRST;
-    private static final int MENU_EXPORT = Menu.FIRST + 1;
-    private static final int MENU_IMPORT = Menu.FIRST + 2;
-    private static final int MENU_ADD_TEST_DATA = Menu.FIRST + 3;
 
     private static final int CTXT_MENU_CMD_EDIT = 0;
     private static final int CTXT_MENU_CMD_DELETE = 1;
@@ -71,8 +62,7 @@ public class MainActivity extends ListActivity
             @Override
             public void onClick(View v)
             {
-                Intent addToDoIntent = new Intent(MainActivity.this, AddEntryActivity.class);
-                startActivityForResult(addToDoIntent, ADD_TODO_ITEM_REQUEST);
+                startAddActivity();
             }
         });
 
@@ -87,53 +77,40 @@ public class MainActivity extends ListActivity
 
         setListAdapter(mAdapter);
 
-        FloatingActionButton fab = (FloatingActionButton) findViewById(R.id.fab);
-        if (fab != null)
-        {
-            fab.setOnClickListener(new View.OnClickListener()
-            {
-                @Override
-                public void onClick(View view)
-                {
-                    Snackbar.make(view, "Replace with your own action", Snackbar.LENGTH_LONG)
-                            .setAction("Action", null).show();
-                }
-            });
-        }
 
         getListView().setLongClickable(true);
-//        this.getListView().setOnItemLongClickListener(new AdapterView.OnItemLongClickListener()
+        registerForContextMenu(getListView());
+
+//        setContentView(R.layout.activity_main);
+//        FloatingActionButton fab = (FloatingActionButton) findViewById(R.id.fab);
+//
+//        fab.setOnClickListener(new View.OnClickListener()
 //        {
-//            public boolean onItemLongClick(AdapterView<?> parent, View v, int position, long id)
+//            @Override
+//            public void onClick(View view)
 //            {
-//                Log.v("long clicked","pos: " + position);
-//                return true;
+//                startAddActivity();
 //            }
 //        });
-//
-//
-        registerForContextMenu(getListView());
 
     }
 
     @Override
     protected void onActivityResult(int requestCode, int resultCode, Intent data)
     {
-        Log.i(TAG, "Entered onActivityResult()");
 
-        // TODOx - Check result code and request code
-        // if user submitted a new ToDoItem
-        // Create a new ToDoItem from the data Intent
-        // and then add it to the adapter
-        if (requestCode == ADD_TODO_ITEM_REQUEST)
+        if (resultCode == RESULT_OK)
         {
-            if (resultCode == RESULT_OK)
+            if (requestCode == ADD_ENTRY_REQUEST)
             {
                 Entry newItem = new Entry(data);
                 mAdapter.add(newItem);
             }
-        }
+            else if (requestCode == EDIT_ENTRY_REQUEST)
+            {
 
+            }
+        }
     }
 
 
@@ -156,8 +133,6 @@ public class MainActivity extends ListActivity
     protected void onPause()
     {
         super.onPause();
-
-        // Save ToDoItems
         saveItems();
     }
 
@@ -169,7 +144,6 @@ public class MainActivity extends ListActivity
         AdapterView.AdapterContextMenuInfo info = (AdapterView.AdapterContextMenuInfo) menuInfo;
         long id = getListAdapter().getItemId(info.position);
 
-        Log.d(TAG, ">>>item id is " + id);
         menu.add(0, CTXT_MENU_CMD_EDIT, 0, R.string.context_menu_edit);
         menu.add(0, CTXT_MENU_CMD_DELETE, 0, R.string.context_menu_delete);
     }
@@ -182,11 +156,10 @@ public class MainActivity extends ListActivity
         switch (item.getItemId())
         {
             case CTXT_MENU_CMD_EDIT:
-                Log.d(TAG, ">>> editing " + info.id);
+                startEditActivity(info.id);
                 return true;
             case CTXT_MENU_CMD_DELETE:
                 deleteEntry(info.id);
-                Log.d(TAG, ">>> deleting " + info.id);
                 return true;
             default:
                 return super.onContextItemSelected(item);
@@ -196,12 +169,7 @@ public class MainActivity extends ListActivity
     @Override
     public boolean onCreateOptionsMenu(Menu menu)
     {
-        super.onCreateOptionsMenu(menu);
-
-        menu.add(Menu.NONE, MENU_DELETE, Menu.NONE, R.string.options_menu_delete_all);
-        menu.add(Menu.NONE, MENU_EXPORT, Menu.NONE, R.string.options_menu_export_to_file);
-        menu.add(Menu.NONE, MENU_IMPORT, Menu.NONE, R.string.options_menu_import_from_file);
-        menu.add(Menu.NONE, MENU_ADD_TEST_DATA, Menu.NONE, R.string.options_menu_add_test_data);
+        getMenuInflater().inflate(R.menu.menu_main, menu);
         return true;
     }
 
@@ -210,24 +178,19 @@ public class MainActivity extends ListActivity
     {
         switch (item.getItemId())
         {
-            case MENU_DELETE:
+            case R.id.action_delete_all:
             {
                 mAdapter.clear();
                 return true;
             }
-            case MENU_EXPORT:
+            case R.id.action_export:
             {
                 saveItems(EXPORT_FILE_NAME);
                 return true;
             }
-            case MENU_IMPORT:
+            case R.id.action_import:
             {
                 loadItems(EXPORT_FILE_NAME);
-                return true;
-            }
-            case MENU_ADD_TEST_DATA:
-            {
-                addTestData();
                 return true;
             }
             default:
@@ -235,50 +198,6 @@ public class MainActivity extends ListActivity
         }
     }
 
-    private void dump()
-    {
-
-        for (int i = 0; i < mAdapter.getCount(); i++)
-        {
-            String data = ((Entry) mAdapter.getItem(i)).toLog();
-            Log.i(TAG, "Item " + i + ": " + data.replace(Entry.ITEM_SEP, ","));
-        }
-
-    }
-
-    private void addTestData()
-    {
-        mAdapter.clear();
-
-        Entry newItem = new Entry(940, Type.INCOME, "стартова сума");
-        mAdapter.add(newItem);
-
-        newItem = new Entry(40, Type.EXPENSE, "джобни");
-        mAdapter.add(newItem);
-        newItem = new Entry(100, Type.EXPENSE, "джобни");
-        mAdapter.add(newItem);
-        newItem = new Entry(22, Type.EXPENSE, "БОБ");
-        mAdapter.add(newItem);
-        newItem = new Entry(100, Type.EXPENSE, "наем Май месец");
-        mAdapter.add(newItem);
-        newItem = new Entry(15, Type.EXPENSE, "пазар");
-        mAdapter.add(newItem);
-        newItem = new Entry(60, Type.EXPENSE, "джобни");
-        mAdapter.add(newItem);
-        newItem = new Entry(50, Type.EXPENSE, "джобни");
-        mAdapter.add(newItem);
-        newItem = new Entry(60, Type.EXPENSE, "репонт Астра");
-        mAdapter.add(newItem);
-        newItem = new Entry(40, Type.EXPENSE, "бензин");
-        mAdapter.add(newItem);
-        newItem = new Entry(40, Type.EXPENSE, "на Илко за брат ми");
-        mAdapter.add(newItem);
-        newItem = new Entry(60, Type.EXPENSE, "джобни");
-        mAdapter.add(newItem);
-        newItem = new Entry(51, Type.EXPENSE, "ток");
-        mAdapter.add(newItem);
-        updateTotalAmount();
-    }
 
     // Load stored Entries
     private void loadItems(String... filename)
@@ -385,5 +304,25 @@ public class MainActivity extends ListActivity
     {
         mAdapter.delete((int) id);
         updateTotalAmount();
+    }
+    public void startEditActivity(long id)
+    {
+        Entry entryToEdit = (Entry) mAdapter.getItem((int) id);
+
+        if(entryToEdit==null)
+        {
+            return;
+        }
+
+        Intent editIntent = new Intent(MainActivity.this, AddEntryActivity.class);
+
+        editIntent.putExtra(Entry.ENTRY_OBJ, entryToEdit);
+        startActivityForResult(editIntent, EDIT_ENTRY_REQUEST);
+    }
+
+    private void startAddActivity()
+    {
+        Intent addEntry = new Intent(MainActivity.this, AddEntryActivity.class);
+        startActivityForResult(addEntry, ADD_ENTRY_REQUEST);
     }
 }

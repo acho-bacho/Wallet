@@ -1,5 +1,6 @@
 package com.example.angelk.wallet;
 
+import java.io.Serializable;
 import java.text.ParseException;
 import java.text.SimpleDateFormat;
 import java.util.Date;
@@ -8,7 +9,7 @@ import java.util.Locale;
 import android.content.Intent;
 
 
-public class Entry
+public class Entry implements Serializable
 {
     public static final String ITEM_SEP = System.getProperty("line.separator");
 
@@ -22,6 +23,7 @@ public class Entry
         OTHER, PERSONAL, AUTO, UTILITIES
     };
 
+    public final static String ENTRY_OBJ = "entry";
     public final static String AMOUNT = "amount";
     public final static String TITLE = "title";
     public final static String TYPE = "type";
