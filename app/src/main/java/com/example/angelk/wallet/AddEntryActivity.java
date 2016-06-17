@@ -5,22 +5,15 @@ import android.app.Activity;
 import java.util.Calendar;
 import java.util.Date;
 
-import android.app.DatePickerDialog;
-import android.app.Dialog;
-import android.app.DialogFragment;
-import android.app.TimePickerDialog;
 import android.content.Intent;
 import android.os.Bundle;
-import android.util.Log;
 import android.view.View;
 import android.view.View.OnClickListener;
+import android.view.inputmethod.ExtractedTextRequest;
 import android.widget.Button;
-import android.widget.DatePicker;
 import android.widget.EditText;
 import android.widget.RadioButton;
 import android.widget.RadioGroup;
-import android.widget.TextView;
-import android.widget.TimePicker;
 
 public class AddEntryActivity extends Activity
 {
@@ -31,6 +24,7 @@ public class AddEntryActivity extends Activity
     private static String timeString;
     private static String dateString;
 
+    private long mEntryToEditId;
     private EditText mAmountText;
     private EditText mTitleText;
 
@@ -55,9 +49,35 @@ public class AddEntryActivity extends Activity
 
         Intent i = getIntent();
         Entry entryToEdit = (Entry) i.getSerializableExtra(Entry.ENTRY_OBJ);
+
         if(entryToEdit!=null)
         {
-            Log.d(TAG, ">>> I AM EDDITTING");
+            mEntryToEditId = i.getLongExtra(Entry.ENTRY_ID, -1);
+
+            mAmountText.setText(Float.toString(entryToEdit.getAmount()));
+            mTitleText.setText(entryToEdit.getTitle());
+
+            if(entryToEdit.getType()== Entry.Type.EXPENSE)
+            {
+                mTypeRadioGroup.check(R.id.typeExpense);
+            }
+            else
+            {
+                mTypeRadioGroup.check(R.id.typeIncome);
+            }
+
+            if(entryToEdit.getCategory() == Entry.Category.PERSONAL)
+            {
+                mCategoryRadio.check(R.id.catPersonal);
+            }
+            else if(entryToEdit.getCategory() == Entry.Category.AUTO)
+            {
+                mCategoryRadio.check(R.id.catAuto);
+            }
+            else
+            {
+                mCategoryRadio.check(R.id.catOther);
+            }
         }
 
 
@@ -107,7 +127,7 @@ public class AddEntryActivity extends Activity
                 // Package ToDoItem data into an Intent
                 Intent data = new Intent();
                 Entry.packageIntent(data, amount, titleString, category, type, fullDate);
-
+                data.putExtra(Entry.ENTRY_ID, mEntryToEditId);
                 //return data Intent and finish
                 setResult(RESULT_OK, data);
                 finish();

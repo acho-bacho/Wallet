@@ -22,7 +22,7 @@ public class Entry implements Serializable
     {
         OTHER, PERSONAL, AUTO, UTILITIES
     };
-
+    public final static String ENTRY_ID = "id";
     public final static String ENTRY_OBJ = "entry";
     public final static String AMOUNT = "amount";
     public final static String TITLE = "title";
@@ -81,7 +81,7 @@ public class Entry implements Serializable
         mTitle = title;
     }
 
-    public Category getPriority()
+    public Category getCategory()
     {
         return mCategory;
     }

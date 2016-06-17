@@ -8,9 +8,6 @@ import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
 import android.widget.BaseAdapter;
-import android.widget.CheckBox;
-import android.widget.CompoundButton;
-import android.widget.CompoundButton.OnCheckedChangeListener;
 import android.widget.TextView;
 
 
@@ -34,6 +31,14 @@ public class EntryAdapter extends BaseAdapter
     {
         mItems.add(item);
         notifyDataSetChanged();
+    }
+    public void update(int location, Entry item)
+    {
+        if(mItems.size()>0)
+        {
+            mItems.set(location, item);
+            notifyDataSetChanged();
+        }
     }
     public void delete(int location)
     {
@@ -123,7 +128,7 @@ public class EntryAdapter extends BaseAdapter
         viewHolder.amountView.setText(Float.toString(currentEntry.getAmount()));
         viewHolder.titleView.setText(currentEntry.getTitle());
         viewHolder.typeView.setText(currentEntry.getType().toString());
-        viewHolder.priorityView.setText(currentEntry.getPriority().toString());
+        viewHolder.priorityView.setText(currentEntry.getCategory().toString());
 
         if (currentEntry.getType()== Entry.Type.EXPENSE)
         {

@@ -108,7 +108,9 @@ public class MainActivity extends ListActivity
             }
             else if (requestCode == EDIT_ENTRY_REQUEST)
             {
-
+                Entry entryToEdit = new Entry(data);
+                long mEntryToEditId = data.getLongExtra(Entry.ENTRY_ID, -1);
+                mAdapter.update((int) mEntryToEditId, entryToEdit);
             }
         }
     }
@@ -316,6 +318,7 @@ public class MainActivity extends ListActivity
 
         Intent editIntent = new Intent(MainActivity.this, AddEntryActivity.class);
 
+        editIntent.putExtra(Entry.ENTRY_ID, id);
         editIntent.putExtra(Entry.ENTRY_OBJ, entryToEdit);
         startActivityForResult(editIntent, EDIT_ENTRY_REQUEST);
     }
