@@ -13,9 +13,7 @@
         android:layout_alignParentTop="true"
         android:ems="10"
         android:hint="@string/amount_string"
-        android:inputType="numberDecimal"
-        >
-
+        android:inputType="numberDecimal">
         <requestFocus/>
     </EditText>
 
@@ -28,29 +26,17 @@
         android:layout_toEndOf="@+id/amount"
         android:ems="10"
         android:hint="@string/enter_description_string"
-        android:inputType="textShortMessage"
-
-        />
-
+        android:inputType="textShortMessage"/>
 
     <!-- Type -->
 
-    <TextView
-        android:id="@+id/type"
-        android:layout_width="wrap_content"
-        android:layout_height="wrap_content"
-        android:layout_alignParentLeft="true"
-        android:layout_below="@+id/title"
-        android:layout_marginTop="25dp"
-        android:text="@string/type_string"
-        android:textAppearance="?android:attr/textAppearanceLarge"/>
 
     <RadioGroup
         android:id="@+id/typeGroup"
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
         android:layout_alignParentLeft="true"
-        android:layout_below="@id/type"
+        android:layout_below="@id/amount"
         android:layout_marginTop="12dp"
         android:orientation="horizontal">
 
@@ -69,46 +55,14 @@
     </RadioGroup>
 
     <!-- Category -->
-
-    <TextView
-        android:id="@+id/category"
+    <Spinner
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
-        android:layout_alignParentLeft="true"
-        android:layout_below="@id/typeGroup"
-        android:layout_marginTop="25dp"
-        android:text="@string/category_str"
-        android:textAppearance="?android:attr/textAppearanceLarge"/>
-
-    <RadioGroup
-        android:id="@+id/categoryGroup"
-        android:layout_width="match_parent"
-        android:layout_height="wrap_content"
-        android:layout_alignParentLeft="true"
-        android:layout_below="@id/category"
-        android:layout_marginTop="12dp"
-        android:orientation="horizontal"
-        android:text="@string/amount_string">
-
-        <RadioButton
-            android:id="@+id/catPersonal"
-            android:layout_width="wrap_content"
-            android:layout_height="wrap_content"
-            android:text="@string/cat_personal_string"/>
-
-        <RadioButton
-            android:id="@+id/catOther"
-            android:layout_width="wrap_content"
-            android:layout_height="wrap_content"
-            android:checked="true"
-            android:text="@string/cat_other_string"/>
-
-        <RadioButton
-            android:id="@+id/catAuto"
-            android:layout_width="wrap_content"
-            android:layout_height="wrap_content"
-            android:text="@string/cat_auto_string"/>
-    </RadioGroup>
+        android:id="@+id/spinner"
+        android:layout_below="@+id/typeGroup"
+        android:layout_alignParentStart="true"
+        android:layout_alignParentEnd="false"
+        />
 
     <!-- Buttons -->
 
@@ -137,6 +91,8 @@
         android:layout_alignParentBottom="true"
         android:layout_alignParentRight="true"
         android:text="@string/submit_string"/>
+
+
 
 
 </RelativeLayout>

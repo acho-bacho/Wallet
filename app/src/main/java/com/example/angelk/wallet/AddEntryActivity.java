@@ -9,11 +9,12 @@ import android.content.Intent;
 import android.os.Bundle;
 import android.view.View;
 import android.view.View.OnClickListener;
-import android.view.inputmethod.ExtractedTextRequest;
 import android.widget.Button;
 import android.widget.EditText;
 import android.widget.RadioButton;
 import android.widget.RadioGroup;
+import android.widget.Spinner;
+import android.widget.ArrayAdapter;
 
 public class AddEntryActivity extends Activity
 {
@@ -25,11 +26,12 @@ public class AddEntryActivity extends Activity
     private static String dateString;
 
     private long mEntryToEditId;
+
+
+    // UI elements
+    private Spinner mSpinner;
     private EditText mAmountText;
     private EditText mTitleText;
-
-    private RadioGroup mCategoryRadio;
-    private RadioButton mDefaultCategoryBtn;
     private RadioGroup mTypeRadioGroup;
     private RadioButton mDefaultTypeBtn;
     private Date mDate;
@@ -43,46 +45,47 @@ public class AddEntryActivity extends Activity
         mAmountText = (EditText) findViewById(R.id.amount);
         mTitleText = (EditText) findViewById(R.id.title);
         mDefaultTypeBtn = (RadioButton) findViewById(R.id.typeExpense);
-        mDefaultCategoryBtn = (RadioButton) findViewById(R.id.catOther);
-        mCategoryRadio = (RadioGroup) findViewById(R.id.categoryGroup);
         mTypeRadioGroup = (RadioGroup) findViewById(R.id.typeGroup);
 
         Intent i = getIntent();
         Entry entryToEdit = (Entry) i.getSerializableExtra(Entry.ENTRY_OBJ);
 
-        if(entryToEdit!=null)
+        // In case we EDIT an existing entry -> set fields
+        if (entryToEdit != null)
         {
             mEntryToEditId = i.getLongExtra(Entry.ENTRY_ID, -1);
 
             mAmountText.setText(Float.toString(entryToEdit.getAmount()));
             mTitleText.setText(entryToEdit.getTitle());
 
-            if(entryToEdit.getType()== Entry.Type.EXPENSE)
+            if (entryToEdit.getType() == Entry.Type.EXPENSE)
             {
                 mTypeRadioGroup.check(R.id.typeExpense);
-            }
-            else
+            } else
             {
                 mTypeRadioGroup.check(R.id.typeIncome);
             }
 
-            if(entryToEdit.getCategory() == Entry.Category.PERSONAL)
-            {
-                mCategoryRadio.check(R.id.catPersonal);
-            }
-            else if(entryToEdit.getCategory() == Entry.Category.AUTO)
-            {
-                mCategoryRadio.check(R.id.catAuto);
-            }
-            else
-            {
-                mCategoryRadio.check(R.id.catOther);
-            }
+            mSpinner.setSelection(((ArrayAdapter)mSpinner.getAdapter()).getPosition(entryToEdit.getCategory()));
         }
 
 
         // Set the default date and time
         setDefaultDateTime();
+
+        setCategorySpinner();
+
+
+        mTypeRadioGroup.setOnCheckedChangeListener(
+                new RadioGroup.OnCheckedChangeListener()
+                {
+                    @Override
+                    public void onCheckedChanged(RadioGroup group, int checkedId)
+                    {
+                        setCategorySpinner();
+                    }
+                }
+        );
 
         // OnClickListener for the Cancel Button,
         final Button cancelButton = (Button) findViewById(R.id.cancelButton);
@@ -114,8 +117,8 @@ public class AddEntryActivity extends Activity
             @Override
             public void onClick(View v)
             {
-                // gather ToDoItem data
-                Entry.Category category = getCategory();
+                // gather ENTRY data
+                String category = getCategory();
                 Entry.Type type = getType();
 
                 float amount = mAmountText.getText().length() > 0 ? Float.parseFloat(mAmountText.getText().toString()) : 0;
@@ -139,7 +142,6 @@ public class AddEntryActivity extends Activity
     {
         mTitleText.setText("");
         mDefaultTypeBtn.setChecked(true);
-        mDefaultCategoryBtn.setChecked(true);
     }
     // Do not modify below this point.
 
@@ -188,23 +190,9 @@ public class AddEntryActivity extends Activity
         timeString = hour + ":" + min + ":00";
     }
 
-    private Entry.Category getCategory()
+    private String getCategory()
     {
-        switch (mCategoryRadio.getCheckedRadioButtonId())
-        {
-            case R.id.catPersonal:
-            {
-                return Entry.Category.PERSONAL;
-            }
-            case R.id.catAuto:
-            {
-                return Entry.Category.AUTO;
-            }
-            default:
-            {
-                return Entry.Category.OTHER;
-            }
-        }
+        return mSpinner.getSelectedItem().toString();
     }
 
     private Entry.Type getType()
@@ -225,5 +213,18 @@ public class AddEntryActivity extends Activity
     private String getToDoTitle()
     {
         return mTitleText.getText().toString();
+    }
+
+    private void setCategorySpinner()
+    {
+        int spinnerArrayResourceId = getType()== Entry.Type.EXPENSE ? R.array.expense_categories : R.array.income_categories;
+
+        mSpinner = (Spinner) findViewById(R.id.spinner);
+        // Create an ArrayAdapter using the string array and a default mSpinner layout
+        ArrayAdapter<CharSequence> adapter = ArrayAdapter.createFromResource(this, spinnerArrayResourceId, android.R.layout.simple_spinner_item);
+        // Specify the layout to use when the list of choices appears
+        adapter.setDropDownViewResource(android.R.layout.simple_spinner_dropdown_item);
+        // Apply the adapter to the mSpinner
+        mSpinner.setAdapter(adapter);
     }
 }

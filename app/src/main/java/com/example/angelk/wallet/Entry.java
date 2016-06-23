@@ -27,7 +27,7 @@ public class Entry implements Serializable
     public final static String AMOUNT = "amount";
     public final static String TITLE = "title";
     public final static String TYPE = "type";
-    public final static String CATEGORY = "priority";
+    public final static String CATEGORY = "__category";
     public final static String DATE = "date";
     public final static String FILENAME = "filename";
 
@@ -112,11 +112,11 @@ public class Entry implements Serializable
     // package them for transport in an Intent
 
     public static void packageIntent(Intent intent, float amount, String title,
-                                     Category category, Type type, String date)
+                                     String category, Type type, String date)
     {
         intent.putExtra(Entry.AMOUNT, amount);
         intent.putExtra(Entry.TITLE, title);
-        intent.putExtra(Entry.CATEGORY, category.toString());
+        intent.putExtra(Entry.CATEGORY, category);
         intent.putExtra(Entry.TYPE, type.toString());
         intent.putExtra(Entry.DATE, date);
 

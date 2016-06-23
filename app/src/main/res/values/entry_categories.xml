@@ -1,0 +1,19 @@
+<?xml version="1.0" encoding="utf-8"?>
+<resources>
+    <string-array name="income_categories">
+        <item>Salary</item>
+        <item>Sale/OLX</item>
+        <item>Other</item>
+    </string-array>
+    <string-array name="expense_categories">
+        <item>Other</item>
+        <item>ATM</item>
+        <item>Savings</item>
+        <item>Car</item>
+        <item>Gas</item>
+        <item>Personal</item>
+        <item>Pocket</item>
+        <item>Rent</item>
+        <item>Utilities</item>
+    </string-array>
+</resources>
