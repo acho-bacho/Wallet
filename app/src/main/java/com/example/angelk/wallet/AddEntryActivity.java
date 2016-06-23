@@ -42,6 +42,15 @@ public class AddEntryActivity extends Activity
         super.onCreate(savedInstanceState);
         setContentView(R.layout.add_entry);
 
+        mSpinner = (Spinner) findViewById(R.id.spinner);
+        // Create an ArrayAdapter using the string array and a default mSpinner layout
+        ArrayAdapter<CharSequence> adapter = ArrayAdapter.createFromResource(this, R.array.expense_categories, android.R.layout.simple_spinner_item);
+        // Specify the layout to use when the list of choices appears
+        adapter.setDropDownViewResource(android.R.layout.simple_spinner_dropdown_item);
+        // Apply the adapter to the mSpinner
+        mSpinner.setAdapter(adapter);
+
+
         mAmountText = (EditText) findViewById(R.id.amount);
         mTitleText = (EditText) findViewById(R.id.title);
         mDefaultTypeBtn = (RadioButton) findViewById(R.id.typeExpense);
@@ -66,15 +75,17 @@ public class AddEntryActivity extends Activity
                 mTypeRadioGroup.check(R.id.typeIncome);
             }
 
-            mSpinner.setSelection(((ArrayAdapter)mSpinner.getAdapter()).getPosition(entryToEdit.getCategory()));
-        }
+            setSpinnerValues();
 
+            int pos = ((ArrayAdapter)mSpinner.getAdapter()).getPosition(entryToEdit.getCategory());
+            if(pos!=-1)
+            {
+                mSpinner.setSelection(pos);
+            }
+        }
 
         // Set the default date and time
         setDefaultDateTime();
-
-        setCategorySpinner();
-
 
         mTypeRadioGroup.setOnCheckedChangeListener(
                 new RadioGroup.OnCheckedChangeListener()
@@ -82,7 +93,7 @@ public class AddEntryActivity extends Activity
                     @Override
                     public void onCheckedChanged(RadioGroup group, int checkedId)
                     {
-                        setCategorySpinner();
+                        setSpinnerValues();
                     }
                 }
         );
@@ -215,7 +226,7 @@ public class AddEntryActivity extends Activity
         return mTitleText.getText().toString();
     }
 
-    private void setCategorySpinner()
+    private void setSpinnerValues()
     {
         int spinnerArrayResourceId = getType()== Entry.Type.EXPENSE ? R.array.expense_categories : R.array.income_categories;
 

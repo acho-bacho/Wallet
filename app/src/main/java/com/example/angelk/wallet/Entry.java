@@ -35,16 +35,19 @@ public class Entry implements Serializable
 
     private float mAmount = 0;
     private String mTitle = new String();
-    private Category mCategory = Category.OTHER;
+
+    private String mCategory = "";
+
+
     private Type mType = Type.EXPENSE;
     private Date mDate = new Date();
 
-    Entry(float amount, Type type, String title)
+    Entry(float amount, Type type, String title, String cat)
     {
         this.mAmount = amount;
         this.mType = type;
         this.mTitle = title;
-        this.mCategory = Category.OTHER;
+        this.mCategory = cat;
         this.mDate = new Date();
     }
 
@@ -53,7 +56,7 @@ public class Entry implements Serializable
     {
         mAmount = intent.getFloatExtra(Entry.AMOUNT, 0);
         mTitle = intent.getStringExtra(Entry.TITLE);
-        mCategory = Category.valueOf(intent.getStringExtra(Entry.CATEGORY));
+        mCategory = intent.getStringExtra(Entry.CATEGORY);
         mType = Type.valueOf(intent.getStringExtra(Entry.TYPE));
 
         try
@@ -81,11 +84,11 @@ public class Entry implements Serializable
         mTitle = title;
     }
 
-    public Category getCategory()
+    public String getCategory()
     {
         return mCategory;
     }
-    public void setPriority(Category category)
+    public void setCategory(String category)
     {
         mCategory = category;
     }
@@ -124,6 +127,7 @@ public class Entry implements Serializable
 
     public String toString()
     {
+
         return mAmount + ITEM_SEP + mTitle + ITEM_SEP + mCategory + ITEM_SEP + mType + ITEM_SEP + FORMAT.format(mDate);
     }
 

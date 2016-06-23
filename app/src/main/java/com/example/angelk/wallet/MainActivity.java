@@ -98,7 +98,6 @@ public class MainActivity extends ListActivity
     @Override
     protected void onActivityResult(int requestCode, int resultCode, Intent data)
     {
-
         if (resultCode == RESULT_OK)
         {
             if (requestCode == ADD_ENTRY_REQUEST)
@@ -224,7 +223,7 @@ public class MainActivity extends ListActivity
                 category = reader.readLine();
                 type = reader.readLine();
                 date = Entry.FORMAT.parse(reader.readLine());
-                mAdapter.add(new Entry(Float.parseFloat(amount), Type.valueOf(type), title));
+                mAdapter.add(new Entry(Float.parseFloat(amount), Type.valueOf(type), title, category));
             }
 
         }
@@ -263,7 +262,7 @@ public class MainActivity extends ListActivity
         updateTotalAmount();
     }
 
-    // Save ToDoItems to file
+    // Save Entries to file
     private void saveItems(String... filename)
     {
         String filenameToUse = filename.length > 0 ? filename[0] : FILE_NAME;
