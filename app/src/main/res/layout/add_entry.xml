@@ -1,19 +1,22 @@
 <?xml version="1.0" encoding="utf-8"?>
-<RelativeLayout xmlns:android="http://schemas.android.com/apk/res/android"
-                android:layout_width="fill_parent"
-                android:layout_height="fill_parent"
-                android:orientation="vertical">
+<LinearLayout xmlns:android="http://schemas.android.com/apk/res/android"
+              android:layout_width="match_parent"
+              android:layout_height="match_parent"
+              android:orientation="vertical">
+
 
     <!-- Amount -->
     <EditText
         android:id="@+id/amount"
         android:layout_width="wrap_content"
-        android:layout_height="wrap_content"
+        android:layout_height="100dp"
         android:layout_alignBottom="@+id/title"
         android:layout_alignParentTop="true"
         android:ems="10"
         android:hint="@string/amount_string"
-        android:inputType="numberDecimal">
+        android:inputType="numberDecimal"
+        android:textSize="@dimen/text_size_add_entry_textview">
+
         <requestFocus/>
     </EditText>
 
@@ -21,14 +24,12 @@
     <EditText
         android:id="@+id/title"
         android:layout_width="wrap_content"
-        android:layout_height="60sp"
+        android:layout_height="100dp"
         android:layout_alignParentTop="true"
-        android:layout_toEndOf="@+id/amount"
         android:ems="10"
         android:hint="@string/enter_description_string"
-        android:inputType="textShortMessage"/>
-
-    <!-- Type -->
+        android:inputType="textShortMessage"
+        android:textSize="@dimen/text_size_add_entry_textview"/>
 
 
     <RadioGroup
@@ -38,61 +39,61 @@
         android:layout_alignParentLeft="true"
         android:layout_below="@id/amount"
         android:layout_marginTop="12dp"
-        android:orientation="horizontal">
+        android:orientation="horizontal"
+        >
 
         <RadioButton
             android:id="@+id/typeIncome"
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
-            android:text="@string/income_string"/>
+            android:text="@string/income_string"
+            android:textSize="@dimen/text_size_add_entry_radio"/>
 
         <RadioButton
             android:id="@+id/typeExpense"
             android:layout_width="wrap_content"
-            android:layout_height="wrap_content"
+            android:layout_height="100dp"
             android:checked="true"
-            android:text="@string/expense_string"/>
+            android:text="@string/expense_string"
+            android:textSize="@dimen/text_size_add_entry_radio"/>
     </RadioGroup>
 
     <!-- Category -->
     <Spinner
-        android:layout_width="wrap_content"
-        android:layout_height="wrap_content"
         android:id="@+id/spinner"
-        android:layout_below="@+id/typeGroup"
-        android:layout_alignParentStart="true"
+        android:layout_width="wrap_content"
+        android:layout_height="100dp"
         android:layout_alignParentEnd="false"
+        android:layout_alignParentStart="true"
+        android:layout_below="@+id/typeGroup"
         />
 
     <!-- Buttons -->
-
-    <Button
-        android:id="@+id/cancelButton"
-        android:layout_width="wrap_content"
+    <LinearLayout
+        android:id="@+id/linearLayout1"
+        android:layout_width="match_parent"
         android:layout_height="wrap_content"
-        android:layout_alignParentBottom="true"
-        android:layout_alignParentLeft="true"
-        android:layout_marginTop="25dp"
-        android:text="@string/cancel_string"
-        />
+        android:orientation="horizontal">
 
-    <Button
-        android:id="@+id/resetButton"
-        android:layout_width="wrap_content"
-        android:layout_height="wrap_content"
-        android:layout_alignParentBottom="true"
-        android:layout_centerHorizontal="true"
-        android:text="@string/reset_string"/>
+        <Button
+            android:id="@+id/cancelButton"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:text="@string/cancel_string"
+            />
 
-    <Button
-        android:id="@+id/submitButton"
-        android:layout_width="wrap_content"
-        android:layout_height="wrap_content"
-        android:layout_alignParentBottom="true"
-        android:layout_alignParentRight="true"
-        android:text="@string/submit_string"/>
+        <Button
+            android:id="@+id/resetButton"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:text="@string/reset_string"/>
 
+        <Button
+            android:id="@+id/submitButton"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:text="@string/submit_string"
+            />
+    </LinearLayout
 
-
-
-</RelativeLayout>
+</LinearLayout>
