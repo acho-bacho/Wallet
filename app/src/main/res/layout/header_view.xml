@@ -3,8 +3,8 @@
           android:layout_width="match_parent"
           android:layout_height="wrap_content"
           android:inputType="numberDecimal"
-          android:gravity="left"
-          android:textSize="35sp"
-          android:textColor="@color/colorPrimaryDark"
-
+          android:gravity="right"
+          android:textSize="@dimen/text_size_header"
+          android:textColor="@color/colorWhite"
+          android:background="@color/colorPrimaryDark"
     />
