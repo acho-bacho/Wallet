@@ -5,4 +5,5 @@
     <dimen name="fab_margin">16dp</dimen>
     <dimen name="text_size_add_entry_textview">50dp</dimen>
     <dimen name="text_size_add_entry_radio">20dp</dimen>
+    <dimen name="text_size_add_entry_spinner">20dp</dimen>
 </resources>

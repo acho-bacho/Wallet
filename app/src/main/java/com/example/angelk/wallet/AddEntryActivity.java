@@ -43,11 +43,9 @@ public class AddEntryActivity extends Activity
         setContentView(R.layout.add_entry);
 
         mSpinner = (Spinner) findViewById(R.id.spinner);
-        // Create an ArrayAdapter using the string array and a default mSpinner layout
-        ArrayAdapter<CharSequence> adapter = ArrayAdapter.createFromResource(this, R.array.expense_categories, android.R.layout.simple_spinner_item);
-        // Specify the layout to use when the list of choices appears
-        adapter.setDropDownViewResource(android.R.layout.simple_spinner_dropdown_item);
-        // Apply the adapter to the mSpinner
+
+        ArrayAdapter<CharSequence> adapter = ArrayAdapter.createFromResource(this, R.array.expense_categories, R.layout.spinner_layout);
+        adapter.setDropDownViewResource(R.layout.spinner_layout);
         mSpinner.setAdapter(adapter);
 
 
@@ -229,13 +227,9 @@ public class AddEntryActivity extends Activity
     private void setSpinnerValues()
     {
         int spinnerArrayResourceId = getType()== Entry.Type.EXPENSE ? R.array.expense_categories : R.array.income_categories;
-
-        mSpinner = (Spinner) findViewById(R.id.spinner);
-        // Create an ArrayAdapter using the string array and a default mSpinner layout
-        ArrayAdapter<CharSequence> adapter = ArrayAdapter.createFromResource(this, spinnerArrayResourceId, android.R.layout.simple_spinner_item);
-        // Specify the layout to use when the list of choices appears
-        adapter.setDropDownViewResource(android.R.layout.simple_spinner_dropdown_item);
-        // Apply the adapter to the mSpinner
+        //TODO: code repetition
+        ArrayAdapter<CharSequence> adapter = ArrayAdapter.createFromResource(this, R.array.expense_categories, R.layout.spinner_layout);
+        adapter.setDropDownViewResource(R.layout.spinner_layout);
         mSpinner.setAdapter(adapter);
     }
 }

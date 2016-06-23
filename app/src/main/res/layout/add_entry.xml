@@ -94,6 +94,6 @@
             android:layout_height="wrap_content"
             android:text="@string/submit_string"
             />
-    </LinearLayout
+    </LinearLayout>
 
 </LinearLayout>
